@@ -1,13 +1,8 @@
 version: '3'
 services:
-  node-app:     #project name
-    build: .    #build images replacing docker build -t node-app-image .
+  node-app:
+    build: .
     ports:
       - "3000:3000"
-    volumes:
-      - ./:/app    #replace -v $(pwd):/app
-      -  /app/node_modules        #replace -v /app/node_modules
     environment:
       - PORT=3000
-    # env_file:
-    #   - ./.env

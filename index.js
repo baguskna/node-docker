@@ -4,7 +4,7 @@ const app = express();
 
 app.get("/", (req, res) => {
   console.log("yuhu");
-  res.send("<h1>hi from root</h1>");
+  res.send("<h1>hi from bagus prod</h1>");
 });
 
 app.get("/me", (req, res) => {
