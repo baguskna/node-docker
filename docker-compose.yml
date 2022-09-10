@@ -6,3 +6,18 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
+    depends_on:       # To load up mongo-db first then node-app
+      - mongo-db
+  
+  mongo-db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=database-mongo
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:
+
+  # docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build

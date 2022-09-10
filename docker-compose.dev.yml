@@ -10,4 +10,11 @@ services:
       -  /app/node_modules        #replace -v /app/node_modules
     environment:
       - NODE_ENV=development
+      - MONGO_USER=database-mongo
+      - MONGO_PASSWORD=123456
     command: npm run dev
+  mongo-db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=database-mongo
+      - MONGO_INITDB_ROOT_PASSWORD=123456
