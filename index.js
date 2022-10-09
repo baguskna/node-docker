@@ -1,7 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const redis = require("redis");
 const postRouter = require("./routes/postRoutes");
 const userRouter = require("./routes/userRoutes");
+const { REDIS_URL, REDIS_PORT, SESSION_SECRET } = require("./config/config");
+
+let RedisStore = require("connect-redis")(session);
+
+let redisClient = redis.createClient({
+  host: REDIS_URL,
+  port: REDIS_PORT,
+});
+
+redisClient.on("error", function (err) {
+  console.log("Could not establish a connection with redis. " + err);
+});
+redisClient.on("connect", function (err) {
+  console.log("Connected to redis successfully");
+});
 
 const app = express();
 
@@ -13,6 +30,19 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: SESSION_SECRET || "pet",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+    },
+  })
+);
 
 app.use(express.json());
 
